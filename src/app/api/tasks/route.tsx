@@ -38,3 +38,45 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export async function POST(request: NextRequest) {
+  const { taskName } = await request.json();
+
+  try {
+    if (!taskName) {
+      return NextResponse.json(
+        {
+          message: 'Task name is required.',
+        },
+        { status: 400 }
+      );
+    }
+
+    if (taskName.length < 3 || taskName.length > 50) {
+      return NextResponse.json(
+        {
+          message: 'Task name must be at least 3 characters and at most 50 characters.',
+        },
+        { status: 400 }
+      );
+    }
+
+    const newTask = await prisma.tasks.create({
+      data: {
+        taskName,
+      },
+    });
+    return NextResponse.json({
+      message: 'Task created successfully.',
+      data: newTask,
+    });
+  } catch (error) {
+    console.error(`Error creating task: ${error}`);
+    return NextResponse.json(
+      {
+        message: `Failed to create task.`,
+      },
+      { status: 500 }
+    );
+  }
+}
