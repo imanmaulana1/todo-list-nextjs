@@ -15,6 +15,14 @@ export async function GET(request: NextRequest) {
         ...(query && { taskName: { contains: query, mode: 'insensitive' } }),
         ...(statusFilter !== undefined && { isCompleted: statusFilter }),
       },
+      orderBy: [
+        {
+          createdAt: 'asc',
+        },
+        {
+          id: 'asc',
+        },
+      ],
     });
 
     return NextResponse.json({
@@ -46,7 +54,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (taskName && (taskName.length < 3 || taskName && taskName.length > 50)) {
+    if (
+      taskName &&
+      (taskName.length < 3 || (taskName && taskName.length > 50))
+    ) {
       return NextResponse.json(
         {
           message:
@@ -70,6 +81,37 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         message: `Failed to create task.`,
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH() {
+  try {
+    const tasksCompleted = await prisma.tasks.updateMany({
+      where: {
+        isCompleted: false,
+      },
+      data: {
+        isCompleted: true,
+      },
+    });
+
+    if (tasksCompleted.count === 0) {
+      return NextResponse.json({
+        message: '👏 You have completed all tasks!',
+      });
+    }
+
+    return NextResponse.json({
+      message: '🔥 You did it! No more tasks to tackle today!',
+    });
+  } catch (error) {
+    console.error(`An error occurred: ${error}`);
+    return NextResponse.json(
+      {
+        message: 'An unexpected error occurred. Please try again later.',
       },
       { status: 500 }
     );
