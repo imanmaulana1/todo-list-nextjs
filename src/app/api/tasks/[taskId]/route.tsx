@@ -38,6 +38,17 @@ export async function GET(
       data: task,
     });
   } catch (error) {
+    const prismaError = error as Prisma.PrismaClientKnownRequestError;
+
+    if (prismaError.code === 'P2025') {
+      return NextResponse.json(
+        {
+          message: 'Task not found.',
+        },
+        { status: 404 }
+      );
+    }
+
     console.error('Error fetching task:', error);
     return NextResponse.json(
       {
@@ -116,6 +127,54 @@ export async function PATCH(
     return NextResponse.json(
       {
         message: 'Failed to update task.',
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ taskId: string }> }
+) {
+  const taskId = Number((await params).taskId);
+
+  if (isNaN(taskId)) {
+    return NextResponse.json(
+      {
+        message: 'Invalid task ID.',
+      },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const task = await prisma.tasks.delete({
+      where: {
+        id: taskId,
+      },
+    });
+
+    return NextResponse.json({
+      message: 'Task deleted successfully.',
+      data: task,
+    });
+  } catch (error) {
+    const prismaError = error as Prisma.PrismaClientKnownRequestError;
+
+    if (prismaError.code === 'P2025') {
+      return NextResponse.json(
+        {
+          message: 'Task not found.',
+        },
+        { status: 404 }
+      );
+    }
+
+    console.error('Error deleting task:', error);
+    return NextResponse.json(
+      {
+        message: 'Failed to delete task.',
       },
       { status: 500 }
     );
