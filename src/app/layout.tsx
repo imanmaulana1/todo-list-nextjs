@@ -1,11 +1,7 @@
-'use client';
-
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import './globals.css';
-import { useState } from 'react';
+import Providers from '@/providers/providers';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -28,16 +24,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [queryClient] = useState(() => new QueryClient());
   return (
     <html lang='en'>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QueryClientProvider client={queryClient}>
-          {children}
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
+        <Providers>
+          <div className='container max-w-screen-xl mx-auto py-4 px-4 md:px-8 lg:px-20'>
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );
