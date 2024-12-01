@@ -9,15 +9,32 @@ export async function GET(request: NextRequest) {
   const statusFilter =
     status === 'completed' ? true : status === 'inprogress' ? false : undefined;
 
-  const tasks = await prisma.tasks.findMany({
-    where: {
-      ...(query && { taskName: { contains: query, mode: 'insensitive' } }),
-      ...(statusFilter !== undefined && { completed: statusFilter }),
-    },
-  });
+  try {
+    const tasks = await prisma.tasks.findMany({
+      where: {
+        ...(query && { taskName: { contains: query, mode: 'insensitive' } }),
+        ...(statusFilter !== undefined && { status: statusFilter }),
+      },
+    });
 
-  return NextResponse.json({
-    message: 'Success',
-    data: tasks,
-  });
+    if (tasks.length === 0) {
+      return NextResponse.json({
+        message: 'No tasks found.',
+      });
+    }
+
+    return NextResponse.json({
+      message: 'Tasks retrieved successfully.',
+      data: tasks,
+      total: tasks.length,
+    });
+  } catch (error) {
+    console.error(`Error retrieving tasks: ${error}`);
+    return NextResponse.json(
+      {
+        message: `Failed to retrieve tasks.`,
+      },
+      { status: 500 }
+    );
+  }
 }
