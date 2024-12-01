@@ -52,10 +52,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (taskName.length < 3 || taskName.length > 50) {
+    if (taskName && (taskName.length < 3 || taskName.length > 50)) {
       return NextResponse.json(
         {
-          message: 'Task name must be at least 3 characters and at most 50 characters.',
+          message:
+            'Task name must be at least 3 characters and at most 50 characters.',
         },
         { status: 400 }
       );
