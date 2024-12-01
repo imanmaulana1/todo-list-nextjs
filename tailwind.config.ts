@@ -14,6 +14,15 @@ export default {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
       },
+      keyframes: {
+        wave: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-4px)' },
+        },
+      },
+      animation: {
+        wave: 'wave 1s infinite ease-in-out', 
+      },
     },
   },
   darkMode: 'class',
