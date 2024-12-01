@@ -38,17 +38,6 @@ export async function GET(
       data: task,
     });
   } catch (error) {
-    const prismaError = error as Prisma.PrismaClientKnownRequestError;
-
-    if (prismaError.code === 'P2025') {
-      return NextResponse.json(
-        {
-          message: 'Task not found.',
-        },
-        { status: 404 }
-      );
-    }
-
     console.error('Error fetching task:', error);
     return NextResponse.json(
       {
@@ -75,7 +64,7 @@ export async function PATCH(
     );
   }
 
-  if ((taskName && taskName.length < 3) || taskName.length > 50) {
+  if (taskName && (taskName.length < 3 || taskName.length > 50)) {
     return NextResponse.json(
       {
         message:
@@ -103,7 +92,7 @@ export async function PATCH(
       },
       data: {
         taskName,
-        status,
+        isCompleted: status,
       },
     });
 

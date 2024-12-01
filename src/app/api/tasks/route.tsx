@@ -13,15 +13,9 @@ export async function GET(request: NextRequest) {
     const tasks = await prisma.tasks.findMany({
       where: {
         ...(query && { taskName: { contains: query, mode: 'insensitive' } }),
-        ...(statusFilter !== undefined && { status: statusFilter }),
+        ...(statusFilter !== undefined && { isCompleted: statusFilter }),
       },
     });
-
-    if (tasks.length === 0) {
-      return NextResponse.json({
-        message: 'No tasks found.',
-      });
-    }
 
     return NextResponse.json({
       message: 'Tasks retrieved successfully.',
@@ -52,7 +46,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (taskName && (taskName.length < 3 || taskName.length > 50)) {
+    if (taskName && (taskName.length < 3 || taskName && taskName.length > 50)) {
       return NextResponse.json(
         {
           message:
