@@ -48,7 +48,7 @@ export async function GET(
   }
 }
 
-export async function PATCH(
+export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ taskId: string }> }
 ) {
@@ -93,6 +93,65 @@ export async function PATCH(
       data: {
         taskName,
         isCompleted: status,
+      },
+    });
+
+    return NextResponse.json({
+      message: 'Task updated successfully.',
+      data: task,
+    });
+  } catch (error) {
+    const prismaError = error as Prisma.PrismaClientKnownRequestError;
+
+    if (prismaError.code === 'P2025') {
+      return NextResponse.json(
+        {
+          message: 'Task not found.',
+        },
+        { status: 404 }
+      );
+    }
+
+    console.error('Error updating task:', error);
+    return NextResponse.json(
+      {
+        message: 'Failed to update task.',
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ taskId: string }> }
+) {
+  const taskId = Number((await params).taskId);
+
+  if (isNaN(taskId)) {
+    return NextResponse.json(
+      {
+        message: 'Invalid task ID.',
+      },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const existingTask = await prisma.tasks.findUnique({
+      where: { id: taskId },
+    });
+
+    if (!existingTask) {
+      return NextResponse.json({ message: 'Task not found.' }, { status: 404 });
+    }
+
+    const task = await prisma.tasks.update({
+      where: {
+        id: taskId,
+      },
+      data: {
+        isCompleted: !existingTask.isCompleted,
       },
     });
 
