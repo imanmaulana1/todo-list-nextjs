@@ -2,13 +2,51 @@
 
 import { useState } from 'react';
 import InputTask from '../ui/input';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '@/lib/axios';
+import { toast } from 'react-toastify';
 
 export default function FormTask() {
   const [value, setValue] = useState('');
+  const queryClient = useQueryClient();
+  const { mutate: createTask } = useMutation({
+    mutationFn: async (newTask: { taskName: string }) => {
+      const response = await api.post('/api/tasks', newTask);
+      return response.data;
+    },
+    onMutate: () => {
+      toast.loading('Creating task...', {
+        position: 'top-center',
+        autoClose: 3000,
+        theme: 'light',
+      });
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      setValue('');
+      toast.dismiss();
+      toast.success(data.message, {
+        position: 'top-center',
+        autoClose: 3000,
+        theme: 'light',
+      });
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+    },
+    onError: (error) => {
+      toast.error((error as Error).message, {
+        position: 'top-center',
+        autoClose: 3000,
+        theme: 'light',
+      });
+    },
+  });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(value);
+    const payload = {
+      taskName: value,
+    };
+    createTask(payload);
   };
 
   return (

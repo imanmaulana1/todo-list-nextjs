@@ -17,7 +17,7 @@ export default function InputTask({ value, setValue }: InputTaskProps) {
       placeholder={isFocus ? 'Press enter...' : 'What is your next task?'}
       startContent={<Dots isFocus={isFocus} />}
       variant='bordered'
-      size='md'
+      size='lg'
       classNames={{
         label: 'sr-only',
         input: ['bg-white', 'text-gray-900', 'placeholder:text-gray-500'],

@@ -10,16 +10,22 @@ export default function Home() {
   const { query, status } = useTasksContext();
   const [value] = useDebounce(query, 500);
 
-  const { data: tasks, isLoading } = useTasks({ q: value, status: status || '' });
+  const { data: tasks, isLoading } = useTasks({
+    q: value,
+    status: status || '',
+  });
 
-  console.log(tasks);
   return (
     <>
       <Header />
       <main>
         <FormTask />
         <FilterTask />
-        <TaskWrapper tasks={tasks?.data} total={tasks?.total} isLoading={isLoading} />
+        <TaskWrapper
+          tasks={tasks?.data}
+          total={tasks?.total}
+          isLoading={isLoading}
+        />
       </main>
     </>
   );

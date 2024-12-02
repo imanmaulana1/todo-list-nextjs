@@ -76,14 +76,14 @@ export async function POST(request: NextRequest) {
       },
     });
     return NextResponse.json({
-      message: 'Task created successfully.',
+      message: 'Task created successfully! 🎉',
       data: newTask,
     });
   } catch (error) {
     console.error(`Error creating task: ${error}`);
     return NextResponse.json(
       {
-        message: `Failed to create task.`,
+        message: `Failed to create task. 😞`,
       },
       { status: 500 }
     );

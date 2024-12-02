@@ -33,7 +33,7 @@ export default function TaskCard({ task }: TaskCardProps) {
             {task.isCompleted ? <Check size={16} color='#fff' /> : null}
           </Button>
           <div>
-            <h3 className={`${task.isCompleted ? 'line-through text-black/50' : ''} text-gray-900`}>{task.taskName}</h3>
+            <h3 className={`${task.isCompleted ? 'line-through text-gray-500' : ''} text-gray-900`}>{task.taskName}</h3>
             <p className='text-gray-600 text-sm'>
               {formatDate(task.updatedAt, 'h:mm A, DD/MM/YYYY')}
             </p>

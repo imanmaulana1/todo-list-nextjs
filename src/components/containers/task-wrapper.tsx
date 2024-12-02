@@ -20,8 +20,6 @@ export default function TaskWrapper({
   total,
   isLoading,
 }: TaskWrapperProps) {
-  console.log(total);
-  console.log(tasks);
   return (
     <>
       {isLoading && <LoadingTaskSpinner />}

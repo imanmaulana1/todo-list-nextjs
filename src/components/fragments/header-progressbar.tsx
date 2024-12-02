@@ -13,11 +13,6 @@ export default function HeaderProgressbar() {
   const progressValue =
     totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
-  console.log(totalTasks);
-  console.log(completedTasks);
-
-  console.log(progressValue);
-
   return (
     <Card className='border-none shadow-none bg-transparent'>
       <CardBody className='justify-center items-center pb-0'>
