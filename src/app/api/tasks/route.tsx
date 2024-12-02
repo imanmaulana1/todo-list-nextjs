@@ -10,6 +10,8 @@ export async function GET(request: NextRequest) {
     status === 'completed' ? true : status === 'inprogress' ? false : undefined;
 
   try {
+    const totalTasks = await prisma.tasks.count();
+
     const tasks = await prisma.tasks.findMany({
       where: {
         ...(query && { taskName: { contains: query, mode: 'insensitive' } }),
@@ -29,6 +31,7 @@ export async function GET(request: NextRequest) {
       message: 'Tasks retrieved successfully.',
       data: tasks,
       total: tasks.length,
+      count: totalTasks,
     });
   } catch (error) {
     console.error(`Error retrieving tasks: ${error}`);
