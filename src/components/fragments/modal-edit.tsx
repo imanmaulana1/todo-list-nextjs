@@ -14,6 +14,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 interface ModalEditProps {
   id: number;
 }
@@ -68,11 +69,24 @@ export default function ModalEdit({ id }: ModalEditProps) {
     },
     onError: (error) => {
       toast.dismiss();
-      toast.error((error as Error).message, {
-        position: 'top-center',
-        autoClose: 3000,
-        theme: 'light',
-      });
+      if (axios.isAxiosError(error)) {
+        const errorMessage =
+          error.response?.data?.message || '😞 An unknown error occurred';
+
+        toast.dismiss();
+        toast.error(errorMessage, {
+          position: 'top-center',
+          autoClose: 3000,
+          theme: 'light',
+        });
+      } else {
+        toast.dismiss();
+        toast.error('😞 Oops something went wrong', {
+          position: 'top-center',
+          autoClose: 3000,
+          theme: 'light',
+        });
+      }
     },
   });
 

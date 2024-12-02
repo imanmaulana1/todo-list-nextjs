@@ -1,6 +1,7 @@
 import { api } from '@/lib/axios';
 import { Button } from '@nextui-org/button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import { CheckCheck } from 'lucide-react';
 import { toast } from 'react-toastify';
 
@@ -38,11 +39,24 @@ export default function ButtonMarkAllCompleted() {
     },
     onError: (error) => {
       toast.dismiss();
-      toast.error((error as Error).message, {
-        position: 'top-center',
-        autoClose: 3000,
-        theme: 'light',
-      });
+      if (axios.isAxiosError(error)) {
+        const errorMessage =
+          error.response?.data?.message || '😞 An unknown error occurred';
+
+        toast.dismiss();
+        toast.error(errorMessage, {
+          position: 'top-center',
+          autoClose: 3000,
+          theme: 'light',
+        });
+      } else {
+        toast.dismiss();
+        toast.error('😞 Oops something went wrong', {
+          position: 'top-center',
+          autoClose: 3000,
+          theme: 'light',
+        });
+      }
     },
   });
 

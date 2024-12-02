@@ -5,6 +5,7 @@ import InputTask from '../ui/input';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/axios';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 export default function FormTask() {
   const [value, setValue] = useState('');
@@ -33,11 +34,26 @@ export default function FormTask() {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
     },
     onError: (error) => {
-      toast.error((error as Error).message, {
-        position: 'top-center',
-        autoClose: 3000,
-        theme: 'light',
-      });
+      console.log(error);
+      if (axios.isAxiosError(error)) {
+        const errorMessage =
+          error.response?.data?.message || '😞 An unknown error occurred';
+
+       
+        toast.dismiss();
+        toast.error(errorMessage, {
+          position: 'top-center',
+          autoClose: 3000,
+          theme: 'light',
+        });
+      } else {
+        toast.dismiss();
+        toast.error('😞 Oops something went wrong', {
+          position: 'top-center',
+          autoClose: 3000,
+          theme: 'light',
+        });
+      }
     },
   });
 
