@@ -156,7 +156,7 @@ export async function PATCH(
     });
 
     return NextResponse.json({
-      message: 'Task updated successfully.',
+      message: 'Task updated successfully. 📝',
       data: task,
     });
   } catch (error) {
@@ -174,7 +174,7 @@ export async function PATCH(
     console.error('Error updating task:', error);
     return NextResponse.json(
       {
-        message: 'Failed to update task.',
+        message: 'Failed to update task. 😞',
       },
       { status: 500 }
     );
