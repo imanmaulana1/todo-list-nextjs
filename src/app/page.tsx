@@ -19,7 +19,7 @@ export default function Home() {
       <main>
         <FormTask />
         <FilterTask />
-        <TaskWrapper tasks={tasks} total={tasks?.total} isLoading={isLoading} />
+        <TaskWrapper tasks={tasks?.data} total={tasks?.total} isLoading={isLoading} />
       </main>
     </>
   );

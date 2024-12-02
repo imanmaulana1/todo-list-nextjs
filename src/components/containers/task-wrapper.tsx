@@ -1,6 +1,6 @@
-
 import LoadingTaskSpinner from '../fragments/loading-task-spinner';
 import NoTaskMessage from '../fragments/no-task-message';
+import TaskCard from '../fragments/task-card';
 
 type Task = {
   id: number;
@@ -25,7 +25,18 @@ export default function TaskWrapper({
   return (
     <>
       {isLoading && <LoadingTaskSpinner />}
-      {tasks && total > 0 ? <>Your tasks list goes here</> : <NoTaskMessage />}
+      {!isLoading && total === 0 && <NoTaskMessage />}
+      {!isLoading && tasks && total > 0 && (
+        <>
+          <section className='container max-w-screen-xl mx-auto my-8'>
+            <div className='min-h-[30vh] bg-[#d7d7d7] flex flex-col gap-4 p-4 rounded-lg'>
+              {tasks?.map((task) => (
+                <TaskCard key={task.id} task={task} />
+              ))}
+            </div>
+          </section>
+        </>
+      )}
     </>
   );
 }
