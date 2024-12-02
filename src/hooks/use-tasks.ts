@@ -1,15 +1,17 @@
-'use client'
+'use client';
 
+import { TaskContext } from '@/contexts/task-context';
 import { api } from '@/lib/axios';
 import { useQuery } from '@tanstack/react-query';
-import { useSearchParams } from 'next/navigation';
+import { useContext } from 'react';
 
-export function useTasks() {
-  const searchParams = useSearchParams();
-
-  const q = searchParams.get('q');
-  const status = searchParams.get('status');
-
+export function useTasks({
+  q = '',
+  status = '',
+}: {
+  q?: string;
+  status?: string;
+}) {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['tasks', { q, status }],
     queryFn: async () => {
@@ -25,4 +27,12 @@ export function useTasks() {
   });
 
   return { data, isLoading, isError };
+}
+
+export function useTasksContext() {
+  const context = useContext(TaskContext);
+  if (!context) {
+    throw new Error('useStatus must be used within a StatusProvider');
+  }
+  return context;
 }
