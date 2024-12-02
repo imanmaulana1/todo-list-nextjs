@@ -204,7 +204,7 @@ export async function DELETE(
     });
 
     return NextResponse.json({
-      message: 'Task deleted successfully.',
+      message: 'Task deleted successfully. 😊',
       data: task,
     });
   } catch (error) {
@@ -222,7 +222,7 @@ export async function DELETE(
     console.error('Error deleting task:', error);
     return NextResponse.json(
       {
-        message: 'Failed to delete task.',
+        message: 'Failed to delete task. 😞',
       },
       { status: 500 }
     );

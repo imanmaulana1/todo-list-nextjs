@@ -23,6 +23,7 @@ export default function ButtonUpdateStatus({
     onSuccess: (data) => {
       console.log(data);
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      queryClient.invalidateQueries({ queryKey: ['task', id] });
     },
     onError: (error) => {
       console.error((error as Error).message);

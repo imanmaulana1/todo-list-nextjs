@@ -1,8 +1,8 @@
 import { formatDate } from '@/utils/helper';
 import { Card, CardHeader } from '@nextui-org/card';
-import { Button } from '@nextui-org/button';
-import { Edit2, Trash2 } from 'lucide-react';
 import ButtonUpdateStatus from '../ui/button-update-status';
+import ModalDelete from './modal-delete';
+import ModalEdit from './modal-edit';
 
 type Task = {
   id: number;
@@ -37,24 +37,8 @@ export default function TaskCard({ task }: TaskCardProps) {
           </div>
         </div>
         <div className='flex gap-2'>
-          <Button
-            isIconOnly
-            color='default'
-            variant='faded'
-            aria-label='Edit task'
-            size='sm'
-          >
-            <Edit2 size={16} color='#333' />
-          </Button>
-          <Button
-            isIconOnly
-            color='danger'
-            variant='faded'
-            aria-label='Delete task'
-            size='sm'
-          >
-            <Trash2 size={16} color='#333' />
-          </Button>
+          <ModalEdit id={task.id}/>
+          <ModalDelete id={task.id} />
         </div>
       </CardHeader>
     </Card>
