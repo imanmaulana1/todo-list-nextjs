@@ -3,6 +3,8 @@ import { Chip } from '@nextui-org/chip';
 import { Card, CardBody, CardFooter } from '@nextui-org/card';
 import { Skeleton } from '@nextui-org/skeleton';
 import { useTasks } from '@/hooks/use-tasks';
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 export default function HeaderProgressbar() {
   const { data, isLoading } = useTasks({ status: 'completed' });
@@ -12,6 +14,16 @@ export default function HeaderProgressbar() {
 
   const progressValue =
     totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  useEffect(() => {
+    if (progressValue === 100) {
+      toast.success('You did it! No more tasks to tackle today! 🔥', {
+        position: 'top-center',
+        autoClose: 3000,
+        theme: 'light',
+      });
+    }
+  }, [progressValue]);
 
   return (
     <Card className='border-none shadow-none bg-transparent'>
