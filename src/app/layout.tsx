@@ -29,16 +29,34 @@ export const metadata: Metadata = {
     siteName: 'Todo List',
     description:
       'Stay organized with our intuitive Todo List web application. Easily manage tasks, track progress, and boost productivity. Perfect for personal use. Get started!',
-    url: process.env.NEXT_PUBLIC_BASE_URL,
+    url:
+      process.env.NEXT_PUBLIC_BASE_URL || 'https://taskly-web-app.vercel.app/',
+    images: [
+      {
+        url: `${
+          process.env.NEXT_PUBLIC_BASE_URL ||
+          'https://taskly-web-app.vercel.app/'
+        }/meta-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Preview of Todo List',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Todo List',
     description:
       'Stay organized with our intuitive Todo List web application. Easily manage tasks, track progress, and boost productivity. Perfect for personal use. Get started!',
+    images: [
+      `${
+        process.env.NEXT_PUBLIC_BASE_URL || 'https://taskly-web-app.vercel.app/'
+      }/meta-image.png`,
+    ],
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_BASE_URL,
+    canonical:
+      process.env.NEXT_PUBLIC_BASE_URL || 'https://taskly-web-app.vercel.app/',
   },
 };
 
@@ -49,6 +67,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
+      <head>
+        <link rel='icon' href='/task.png' type='image/png' />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased`}
       >
