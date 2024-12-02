@@ -103,12 +103,12 @@ export async function PATCH() {
 
     if (tasksCompleted.count === 0) {
       return NextResponse.json({
-        message: '👏 You have completed all tasks!',
+        message: 'You have completed all tasks! 👏',
       });
     }
 
     return NextResponse.json({
-      message: '🔥 You did it! No more tasks to tackle today!',
+      message: 'You did it! No more tasks to tackle today! 🔥',
     });
   } catch (error) {
     console.error(`An error occurred: ${error}`);

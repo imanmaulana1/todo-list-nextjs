@@ -27,7 +27,7 @@ export default function TaskWrapper({
       {!isLoading && tasks && total > 0 && (
         <>
           <section className='container max-w-screen-xl mx-auto my-8'>
-            <div className='min-h-[30vh] bg-[#d7d7d7] flex flex-col gap-4 p-4 rounded-lg'>
+            <div className='min-h-[30vh] bg-[#d7d7d7] flex flex-col gap-4 p-4 rounded-xl'>
               {tasks?.map((task) => (
                 <TaskCard key={task.id} task={task} />
               ))}
